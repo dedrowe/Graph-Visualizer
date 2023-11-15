@@ -1,12 +1,26 @@
-﻿<Window x:Class="GraphVisualizer.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphVisualizer"
+        x:Name="window" x:Class="GraphVisualizer.MainWindow"
+        
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="Graph visualizer" Height="1080" Width="1920">
+    <Grid Background="LightGray">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Bottom" Text="Степень графа: " FontSize="14"/>
+            <TextBlock x:Name="GraphDegree" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Degree}" VerticalAlignment="Bottom" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Порядок графа: " Margin="10,0,0,0" VerticalAlignment="Bottom" FontSize="14"/>
+            <TextBlock x:Name="GraphOrder" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Order}" VerticalAlignment="Bottom" FontSize="14"/>
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Размер графа: " Margin="10,0,0,0" VerticalAlignment="Bottom" FontSize="14"/>
+            <TextBlock x:Name="GraphSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Size}" VerticalAlignment="Bottom" FontSize="14"/>
+        </StackPanel>
+        <Button Content="Добавить вершину" HorizontalAlignment="Left"  Margin="10,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Canvas Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="RemoveVertex">
+            
+        </Canvas>
     </Grid>
+    
 </Window>

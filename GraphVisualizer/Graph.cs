@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace graph_test
+namespace GraphVisualizer
 {
-    class Graph
+    class Graph: INotifyPropertyChanged
     {
         Dictionary<string, List<Edge>> _arr;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public struct Edge
         {
             public string From { get; }
@@ -36,6 +44,7 @@ namespace graph_test
             try
             {
                 _arr.Add(vertex, new List<Edge>());
+                OnPropertyChanged(nameof(Order));
             }
             catch (ArgumentException)
             {
@@ -55,6 +64,7 @@ namespace graph_test
                         i.Remove(edge);
                 }
             }
+            OnPropertyChanged(nameof(Order));
             return true;
         }
 
@@ -63,6 +73,8 @@ namespace graph_test
             if (!_arr.ContainsKey(from) || !_arr.ContainsKey(to))
                 return false;
             _arr[from].Add(new Edge(from, to, distance));
+            OnPropertyChanged(nameof(Size));
+            OnPropertyChanged(nameof(Degree));
             return true;
         }
 
@@ -71,6 +83,8 @@ namespace graph_test
             if (!_arr.ContainsKey(edge.From) || !_arr.ContainsKey(edge.To))
                 return false;
             _arr[edge.From].Add(edge);
+            OnPropertyChanged(nameof(Size));
+            OnPropertyChanged(nameof(Degree));
             return true;
         }
 
@@ -80,13 +94,23 @@ namespace graph_test
                 return false;
             string tmp_from = from;
             string tmp_to = to;
-            return _arr[from].Remove(_arr[from].Find(x => x.From == tmp_from && x.To == tmp_to));
+            bool tmp = _arr[from].Remove(_arr[from].Find(x => x.From == tmp_from && x.To == tmp_to));
+            if (tmp)
+            {
+                OnPropertyChanged(nameof(Size));
+                OnPropertyChanged(nameof(Degree));
+            }
+            return tmp;
         }
 
         public bool RemoveEdge(in Edge edge)
         {
             if (HasEdge(edge))
+            {
+                OnPropertyChanged(nameof(Size));
+                OnPropertyChanged(nameof(Degree));
                 return _arr[edge.From].Remove(edge);
+            }
             return false;
         }
 
@@ -104,29 +128,47 @@ namespace graph_test
             return true;
         }
 
-        public int Order()
+        public int Order
         {
-            return _arr.Count();
+            get
+            {
+                return _arr.Count();
+            }
         }
 
-        public int Degree()
+        public int Degree
         {
-            if (_arr.Count == 0)
-                throw new InvalidOperationException("Граф пуст");
-            int max = 0;
-            foreach (var list in _arr.Values)
+            get
             {
-                int tmp = list.Count();
-                if (tmp > max)
-                    max = tmp;
+                int max = 0;
+                foreach (var list in _arr.Values)
+                {
+                    int tmp = list.Count();
+                    if (tmp > max)
+                        max = tmp;
+                }
+                return max;
             }
-            return max;
+            
+        }
+
+        public int Size
+        {
+            get
+            {
+                int size = 0;
+                foreach (var list in _arr.Values)
+                {
+                    size += list.Count();
+                }
+                return size;
+            }
         }
 
         public void PrintGraph()
         {
             if (_arr.Count == 0)
-                throw new InvalidOperationException("НЕвозможно вывети граф, потому что он пуст");
+                throw new InvalidOperationException("Невозможно вывети граф, потому что он пуст");
             foreach (var list in _arr.Values)
             {
                 foreach (var edge in list)
