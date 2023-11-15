@@ -21,19 +21,17 @@ namespace GraphVisualizer
     /// </summary>
     public partial class Vertex : UserControl
     {
-        private object movingObject;
+        private object? movingObject;
         private double firstXPos, firstYPos;
+
         public Vertex()
         {
             InitializeComponent();
-            this.MouseLeftButtonDown += new MouseButtonEventHandler(Vertex_MouseLeftButtonDown);
-            this.MouseLeftButtonUp += new MouseButtonEventHandler(Vertex_MouseLeftButtonUp);
-            this.MouseMove += new MouseEventHandler(Vertex_MouseMove);
         }
         private void Vertex_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Vertex vertex = sender as Vertex;
-            Canvas canvas = vertex.Parent as Canvas;
+            Vertex vertex = (Vertex)sender;
+            Canvas canvas = (Canvas)vertex.Parent;
             firstXPos = e.GetPosition(vertex).X;
             firstYPos = e.GetPosition(vertex).Y;
             movingObject = sender;
@@ -47,7 +45,7 @@ namespace GraphVisualizer
 
         private void Vertex_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Vertex vertex = sender as Vertex;
+            Vertex vertex = (Vertex)sender;
             movingObject = null;
             vertex.ReleaseMouseCapture();
         }
@@ -56,8 +54,8 @@ namespace GraphVisualizer
         {
             if (e.LeftButton == MouseButtonState.Pressed && sender == movingObject)
             {
-                Vertex vertex = sender as Vertex;
-                Canvas canvas = vertex.Parent as Canvas;
+                Vertex vertex = (Vertex)sender;
+                Canvas canvas = (Canvas)vertex.Parent;
 
                 Point position = e.GetPosition(canvas);
                 double newLeft = position.X - firstXPos;

@@ -24,42 +24,86 @@ namespace GraphVisualizer
     {
         Graph graph = new Graph();
         int count = 0;
+        byte mode = 0;
         public MainWindow()
         {
             InitializeComponent();
-            /*graph.AddVertex("1");
-            graph.AddVertex("2");
-            graph.AddVertex("3");
-            graph.AddVertex("4");
-            graph.AddVertex("5");
-            graph.AddEdge("1", "2", 1);
-            graph.AddEdge("1", "3", 10);
-            graph.AddEdge("2", "4", 20);
-            graph.AddEdge("3", "4", 11.1);
-            */
             this.DataContext = graph;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            graph.AddVertex($"{++count}");
-            var tmp = new TextBlock() { Text="12", Tag = "1" };
-            Vertex b = new Vertex() { VertexName=tmp };
-            b.VertexName = new TextBlock() { Text = "2", Tag = "1" };
-            Canvas.SetTop(b, GraphCanvas.ActualHeight / 2);
-            Canvas.SetLeft(b, GraphCanvas.ActualWidth / 2);
-            GraphCanvas.Children.Add(b);
-            
-        }
-        private void RemoveVertex(object sender, MouseButtonEventArgs e)
-        {
-        /*
-            if (e.Source is Vertex)
+            try
             {
-                Vertex vertex = (Vertex)e.Source;
-                GraphCanvas.Children.Remove(vertex);
+                graph.AddVertex($"{++count}");
+                Vertex b = new Vertex();
+                Canvas.SetTop(b, GraphCanvas.ActualHeight / 2);
+                Canvas.SetLeft(b, GraphCanvas.ActualWidth / 2);
+                object tmp = b.VertexCanvas.FindName("VertexName");
+                if (tmp is TextBlock)
+                {
+                    TextBlock child = (TextBlock)tmp;
+                    child.Text = $"{count}";
+                }
+                GraphCanvas.Children.Add(b);
             }
-        */
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void CanvasLMBClick(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source is Canvas)
+            {
+                Point position = e.GetPosition(GraphCanvas);
+                switch (mode)
+                {
+                    case 1:
+                        try
+                        {
+                            graph.AddVertex($"{++count}");
+                            Vertex b = new Vertex();
+                            b.SetValue(Canvas.LeftProperty, position.X - 25);
+                            b.SetValue(Canvas.TopProperty, position.Y - 25);
+                            //Canvas.SetTop(b, position.X);
+                            //Canvas.SetLeft(b, position.Y);
+                            object tmp = b.VertexCanvas.FindName("VertexName");
+                            if (tmp is TextBlock)
+                            {
+                                TextBlock child = (TextBlock)tmp;
+                                child.Text = $"{count}";
+                            }
+                            GraphCanvas.Children.Add(b);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void AddEdge_Checked(object sender, RoutedEventArgs e)
+        {
+            mode = 2;
+        }
+
+        private void AddVertex_Checked(object sender, RoutedEventArgs e)
+        {
+            mode = 1;
+        }
+
+        private void DragElement_Checked(object sender, RoutedEventArgs e)
+        {
+            mode = 3;
+        }
+
+        private void DeleteElement_Checked(object sender, RoutedEventArgs e)
+        {
+            mode = 4;
         }
     }
 }

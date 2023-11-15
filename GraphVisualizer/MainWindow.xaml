@@ -18,9 +18,18 @@
             <TextBlock x:Name="GraphSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Size}" VerticalAlignment="Bottom" FontSize="14"/>
         </StackPanel>
         <Button Content="Добавить вершину" HorizontalAlignment="Left"  Margin="10,31,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Canvas Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="RemoveVertex">
-            
+        <Canvas Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="CanvasLMBClick">
+
         </Canvas>
+        <ToolBar HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="530">
+            <RadioButton Content="Добавление вершины" Checked="AddVertex_Checked" IsChecked="True"/>
+            <Separator/>
+            <RadioButton Content="Добавление ребра" Checked="AddEdge_Checked"/>
+            <Separator/>
+            <RadioButton Content="Перемещение вершин" Checked="DragElement_Checked"/>
+            <Separator/>
+            <RadioButton Content="Удаление элементов" Checked="DeleteElement_Checked"/>
+        </ToolBar>
     </Grid>
-    
+
 </Window>

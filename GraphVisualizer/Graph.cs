@@ -41,15 +41,8 @@ namespace GraphVisualizer
 
         public void AddVertex(in string vertex)
         {
-            try
-            {
-                _arr.Add(vertex, new List<Edge>());
-                OnPropertyChanged(nameof(Order));
-            }
-            catch (ArgumentException)
-            {
-                Console.WriteLine("Вершина с таким значением уже есть");
-            }
+            _arr.Add(vertex, new List<Edge>());
+            OnPropertyChanged(nameof(Order));
         }
 
         public bool RemoveVertex(in string vertex)
