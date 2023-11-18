@@ -7,7 +7,7 @@
             MouseLeftButtonDown="Vertex_LMBDown"
             MouseLeftButtonUp="Vertex_LMBUp">
     <Canvas x:Name="VertexCanvas" Height="50px" Width="50px">
-        <Ellipse x:Name="VertexObject" Height="50px" Width="50px" StrokeThickness="1" Stroke="Black" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Ellipse x:Name="VertexObject" Height="50px" Width="50px" StrokeThickness="1" Stroke="Black" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="0"/>
         <TextBlock x:Name="VertexName" Height="14" Width="38" Canvas.Left="6" Canvas.Top="17" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" />
     </Canvas>
 </UserControl>

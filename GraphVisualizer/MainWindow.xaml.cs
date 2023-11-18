@@ -73,8 +73,6 @@ namespace GraphVisualizer
                         MessageBox.Show(ex.Message);
                     }
                     break;
-                case 2:
-                    break;
                 case 4:
                     if (e.Source is Vertex) 
                     {
@@ -82,6 +80,11 @@ namespace GraphVisualizer
                         GraphCanvas.Children.Remove(vertex);
                         _graph.RemoveVertex(vertex.VertexName.Text);
                         vertex.GetValue(Canvas.LeftProperty);
+                    }
+                    else if (e.Source is Edge)
+                    {
+                        Edge edge = (Edge)e.Source;
+                        GraphCanvas.Children.Remove(edge);
                     }
                     break;
             }

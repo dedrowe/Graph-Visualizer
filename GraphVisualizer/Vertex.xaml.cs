@@ -7,12 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace GraphVisualizer
@@ -27,6 +23,8 @@ namespace GraphVisualizer
         public double _positionX { get; set; }
         public double _positionY { get; set; }
         public double _vertexRadius = 25;
+        private List<Edge> _edgesOut = new List<Edge>();
+        private List<Edge> _edgesIn = new List<Edge>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -37,11 +35,11 @@ namespace GraphVisualizer
 
         public bool _isSelected { get; set; } = false;
 
-
         public Vertex()
         {
             InitializeComponent();
         }
+
         private void Vertex_LMBDown(object sender, MouseButtonEventArgs e)
         {
             if (MainWindow.Mode == 3)
@@ -61,7 +59,6 @@ namespace GraphVisualizer
                 Panel.SetZIndex(vertex, top + 1);
                 vertex.CaptureMouse();
             }
-            /*
             else if (MainWindow.Mode == 2)
             {
                 if (_isSelected)
@@ -90,18 +87,17 @@ namespace GraphVisualizer
                     double y1 = firstVertex._positionY + _vertexRadius;
                     double x2 = _positionX + _vertexRadius;
                     double y2 = _positionY + _vertexRadius;
-                    LineGeometry line = new LineGeometry(new Point(x1, y1), new Point(x2, y2));
-                    Edge edge = new Edge(x1, y1, x2, y2);
+                    Edge edge = new Edge ();
+                    Label label = (Label)edge.EdgeCanvas.FindName("EdgeWeight");
+                    label.Content = edge.Weight;
+                    Edge.CalculateArrowParameters(edge, x1, y1, x2, y2, _vertexRadius);
                     int minZIndex = Panel.GetZIndex(firstVertex) < Panel.GetZIndex(this) ? Panel.GetZIndex(firstVertex) : Panel.GetZIndex(this);
-                    Path path = new Path();
-                    path.Stroke = Brushes.Black;
-                    path.StrokeThickness = 1;
-                    path.Data = line;
-                    //canvas.Children.Add(line);
-                    canvas.Children.Add(path);
+                    Panel.SetZIndex(edge, minZIndex - 1);
+                    canvas.Children.Add(edge);
+                    firstVertex._edgesOut.Add(edge);
+                    _edgesIn.Add(edge);
                 }
             }
-            */
         }
 
         private void Vertex_LMBUp(object sender, MouseButtonEventArgs e)
@@ -136,6 +132,14 @@ namespace GraphVisualizer
                 OnPropertyChanged(nameof(_positionY));
                 vertex.SetValue(Canvas.LeftProperty, newLeft);
                 vertex.SetValue(Canvas.TopProperty, newTop);
+                foreach (Edge edge in _edgesIn)
+                {
+                    Edge.CalculateArrowParameters(edge, edge.EdgeLine.X1, edge.EdgeLine.Y1, newLeft + _vertexRadius, newTop + _vertexRadius, _vertexRadius);
+                }
+                foreach (Edge edge in _edgesOut)
+                {
+                    Edge.CalculateArrowParameters(edge, newLeft + _vertexRadius, newTop + _vertexRadius, edge.EdgeLine.X2, edge.EdgeLine.Y2, _vertexRadius);
+                }
             }
         }
 
