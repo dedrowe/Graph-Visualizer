@@ -211,9 +211,9 @@
             <Separator/>
             <RadioButton Content="Удаление элементов" Checked="DeleteElement_Checked"/>
             <Separator/>
-            <RadioButton Content="Обход в ширину" Checked="BreadthFirstSearch_Checked"/>
+            <RadioButton Content="Обход в ширину" Checked="BreadthFirstSearch_Checked" Unchecked="ClearBypassOrder"/>
             <Separator/>
-            <RadioButton Content="Обход в глубину" Checked="DepthFirstSearch_Checked"/>
+            <RadioButton Content="Обход в глубину" Checked="DepthFirstSearch_Checked" Unchecked="ClearBypassOrder"/>
         </ToolBar>
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="750,16,0,0">
             <TextBlock x:Name="PathWarning" Height="20" FontSize="14"/>

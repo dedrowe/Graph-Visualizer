@@ -302,5 +302,16 @@ namespace GraphVisualizer
         {
             ShowPath();
         }
+
+        private void ClearBypassOrder(object sender, RoutedEventArgs e)
+        {
+            foreach (var tmp in GraphCanvas.Children)
+            {
+                if (tmp is Vertex tmpVertex)
+                {
+                    tmpVertex.BypassOrder.Text = "";
+                }
+            }
+        }
     }
 }

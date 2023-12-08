@@ -63,7 +63,8 @@ namespace GraphVisualizer
             AddVertex(newName);
             foreach (var edge in _arr[name])
             {
-                AddEdge(newName, edge.To, edge.Distance);
+                edge.From = newName;
+                AddEdge(edge);
             }
             RemoveVertex(name);
             return true;
