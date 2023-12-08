@@ -137,6 +137,7 @@ namespace GraphVisualizer
                         _graph.RemoveEdge(edge);
                         GraphCanvas.Children.Remove(edge);
                     }
+                    ShowPath();
                     break;
                 case 5:
                     if (e.Source is Vertex)

@@ -215,7 +215,7 @@
             <Separator/>
             <RadioButton Content="Обход в глубину" Checked="DepthFirstSearch_Checked" Unchecked="ClearBypassOrder"/>
         </ToolBar>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="750,16,0,0">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="750,10,0,0">
             <TextBlock x:Name="PathWarning" Height="20" FontSize="14"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Начальная вершина: " FontSize="14"/>
