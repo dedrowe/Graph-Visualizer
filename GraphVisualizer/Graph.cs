@@ -11,22 +11,9 @@ namespace GraphVisualizer
         Dictionary<string, List<Edge>> _arr;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public struct Edge
-        {
-            public string From { get; }
-            public string To { get; }
-            public double Distance { get; set; }
-            public Edge(string from, string to, double distance)
-            {
-                From = from;
-                To = to;
-                Distance = distance;
-            }
         }
 
         public Graph()
@@ -54,10 +41,31 @@ namespace GraphVisualizer
                 foreach (var edge in i)
                 {
                     if (edge.To == vertex)
-                        i.Remove(edge);
+                        RemoveEdge(edge);
                 }
             }
             OnPropertyChanged(nameof(Order));
+            return true;
+        }
+
+        public bool EditVertex(in string name, in string newName)
+        {
+            if (_arr.ContainsKey(newName) || !_arr.ContainsKey(name))
+                return false;
+            foreach (var i in _arr.Values)
+            {
+                foreach (var edge in i)
+                {
+                    if (edge.To == name)
+                        edge.To = newName;
+                }
+            }
+            AddVertex(newName);
+            foreach (var edge in _arr[name])
+            {
+                AddEdge(newName, edge.To, edge.Distance);
+            }
+            RemoveVertex(name);
             return true;
         }
 
@@ -98,20 +106,26 @@ namespace GraphVisualizer
 
         public bool RemoveEdge(in Edge edge)
         {
+            bool flag = false;
             if (HasEdge(edge))
             {
+                flag = _arr[edge.From].Remove(edge);
                 OnPropertyChanged(nameof(Size));
                 OnPropertyChanged(nameof(Degree));
-                return _arr[edge.From].Remove(edge);
             }
-            return false;
+            return flag;
         }
 
         public bool HasEdge(in string from, in string to)
         {
             if (!_arr.ContainsKey(from) || !_arr.ContainsKey(to))
                 return false;
-            return true;
+            foreach (Edge edge in _arr[from])
+            {
+                if (edge.To == to)
+                    return true;
+            }
+            return false;
         }
 
         public bool HasEdge(in Edge edge)
@@ -171,18 +185,19 @@ namespace GraphVisualizer
             }
         }
 
-        public void BreadthFirstSearch(in string start_vertex)
+        public List<string> BreadthFirstSearch(in string start_vertex)
         {
             if (_arr.Count == 0)
                 throw new InvalidOperationException("Невозможно обойти граф, потому что он пуст");
             Queue<string> q = new Queue<string>();
             HashSet<string> visited = new HashSet<string>();
+            List<string> result = new();
             q.Enqueue(start_vertex);
             visited.Add(start_vertex);
             while (q.Count > 0)
             {
                 string v = q.Dequeue();
-                Console.WriteLine(v);
+                result.Add(v);
                 foreach (var edge in _arr[v])
                 {
                     string neighbor = edge.To;
@@ -193,20 +208,22 @@ namespace GraphVisualizer
                     }
                 }
             }
+            return result;
         }
 
-        public void DepthFirstSearch(in string start_vertex)
+        public List<string> DepthFirstSearch(in string start_vertex)
         {
             if (_arr.Count == 0)
                 throw new InvalidOperationException("Невозможно обойти граф, потому что он пуст");
             Stack<string> q = new Stack<string>();
             HashSet<string> visited = new HashSet<string>();
+            List<string> result = new();
             q.Push(start_vertex);
             visited.Add(start_vertex);
             while (q.Count > 0)
             {
                 string tmp = q.Pop();
-                Console.WriteLine(tmp);
+                result.Add(tmp);
                 foreach (var edge in _arr[tmp])
                 {
                     string neighbor = edge.To;
@@ -217,6 +234,7 @@ namespace GraphVisualizer
                     }
                 }
             }
+            return result;
         }
 
         public List<Edge> FindShortestPath(in string from, in string to)
@@ -259,16 +277,14 @@ namespace GraphVisualizer
             while (prev.ContainsKey(cur))
             {
                 string prev_vertex = prev[cur];
-                double weight = 0;
                 foreach (var edge in _arr[prev_vertex])
                 {
                     if (edge.To == cur)
                     {
-                        weight = edge.Distance;
+                        path.Add(edge);
                         break;
                     }
                 }
-                path.Add(new Edge(prev_vertex, cur, weight));
                 cur = prev_vertex;
             }
             path.Reverse();

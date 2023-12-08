@@ -7,9 +7,9 @@
              mc:Ignorable="d"
              d:DesignHeight="1" d:DesignWidth="1">
     <Canvas Name="EdgeCanvas">
-        <Line Name="EdgeLine" Stroke="Black" StrokeThickness="2" Panel.ZIndex="-1"></Line>
-        <Line Name="ArrowHead1" Stroke="Black" StrokeThickness="2" Panel.ZIndex="-1"></Line>
-        <Line Name="ArrowHead2" Stroke="Black" StrokeThickness="2" Panel.ZIndex="-1"></Line>
-        <Label Name="EdgeWeight" Foreground="Orange" Background="White"/>
+        <Line Name="EdgeLine" StrokeThickness="2" Panel.ZIndex="-1"></Line>
+        <Line Name="ArrowHead1" StrokeThickness="2" Panel.ZIndex="-1"></Line>
+        <Line Name="ArrowHead2" StrokeThickness="2" Panel.ZIndex="-1"></Line>
+        <Label Name="EdgeWeight" Content="{Binding Path=Distance}" Foreground="Orange"/>
     </Canvas>
 </UserControl>

@@ -201,10 +201,8 @@
             <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Размер графа: " Margin="10,0,0,0" VerticalAlignment="Bottom" FontSize="14"/>
             <TextBlock x:Name="GraphSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Size}" VerticalAlignment="Bottom" FontSize="14"/>
         </StackPanel>
-        <Canvas Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="CanvasLMBClick">
-
-        </Canvas>
-        <ToolBar Style="{DynamicResource ToolBarStyle1}" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="539" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="False">
+        <Canvas x:Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="CanvasLMBClick" MouseRightButtonDown="CanvasRMBClick"/>
+        <ToolBar Style="{DynamicResource ToolBarStyle1}" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="746" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="False">
             <RadioButton Content="Добавление вершины" Checked="AddVertex_Checked" IsChecked="True" Margin="10, 0, 0, 0"/>
             <Separator/>
             <RadioButton Content="Добавление ребра" Checked="AddEdge_Checked"/>
@@ -212,7 +210,27 @@
             <RadioButton Content="Перемещение вершин" Checked="DragElement_Checked"/>
             <Separator/>
             <RadioButton Content="Удаление элементов" Checked="DeleteElement_Checked"/>
+            <Separator/>
+            <RadioButton Content="Обход в ширину" Checked="BreadthFirstSearch_Checked"/>
+            <Separator/>
+            <RadioButton Content="Обход в глубину" Checked="DepthFirstSearch_Checked"/>
         </ToolBar>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="750,16,0,0">
+            <TextBlock x:Name="PathWarning" Height="20" FontSize="14"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Начальная вершина: " FontSize="14"/>
+                <TextBox x:Name="StartVertex" Width="100" FontSize="14" TextChanged="PathChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Конечная вершина:  " FontSize="14"/>
+                <TextBox x:Name="EndVertex" Width="100" Margin="3,0,0,0" FontSize="14" TextChanged="PathChanged"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Длина пути:" Width="88" FontSize="14"/>
+                <TextBlock x:Name="PathLength" FontSize="14"/>
+            </StackPanel>
+        </StackPanel>
+        
     </Grid>
 
 </Window>
