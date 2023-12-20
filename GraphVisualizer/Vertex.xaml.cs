@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Data;
+using System.Text.Json.Serialization;
 
 namespace GraphVisualizer
 {
@@ -34,7 +35,7 @@ namespace GraphVisualizer
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private string _vertexName;
+        private string _vertexName = "";
         public string VertexName
         { 
             get
@@ -111,14 +112,19 @@ namespace GraphVisualizer
 
                 vertex.SetValue(Canvas.LeftProperty, newLeft);
                 vertex.SetValue(Canvas.TopProperty, newTop);
-                foreach (Edge edge in _edgesIn)
-                {
-                    edge.CalculateArrowParameters(edge.EdgeLine.X1, edge.EdgeLine.Y1, newLeft + vertexRadius, newTop + vertexRadius);
-                }
-                foreach (Edge edge in _edgesOut)
-                {
-                    edge.CalculateArrowParameters(newLeft + vertexRadius, newTop + vertexRadius, edge.EdgeLine.X2, edge.EdgeLine.Y2);
-                }
+                CalculateEdgeCoordinates(newLeft, newTop);
+            }
+        }
+
+        public void CalculateEdgeCoordinates(double newLeft, double newTop)
+        {
+            foreach (Edge edge in _edgesIn)
+            {
+                edge.CalculateArrowParameters(edge.EdgeLine.X1, edge.EdgeLine.Y1, newLeft + vertexRadius, newTop + vertexRadius);
+            }
+            foreach (Edge edge in _edgesOut)
+            {
+                edge.CalculateArrowParameters(newLeft + vertexRadius, newTop + vertexRadius, edge.EdgeLine.X2, edge.EdgeLine.Y2);
             }
         }
 

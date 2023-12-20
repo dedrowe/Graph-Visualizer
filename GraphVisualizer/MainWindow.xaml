@@ -202,6 +202,7 @@
             <TextBlock x:Name="GraphSize" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Size}" VerticalAlignment="Bottom" FontSize="14"/>
         </StackPanel>
         <Canvas x:Name="GraphCanvas" VerticalAlignment="Stretch" Width="auto" Margin="5, 100, 20, 30" Background="White" Focusable="True" MouseLeftButtonDown="CanvasLMBClick" MouseRightButtonDown="CanvasRMBClick"/>
+        
         <ToolBar Style="{DynamicResource ToolBarStyle1}" HorizontalAlignment="Left" Margin="10,68,0,0" VerticalAlignment="Top" Width="746" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" UseLayoutRounding="False">
             <RadioButton Content="Добавление вершины" Checked="AddVertex_Checked" IsChecked="True" Margin="10, 0, 0, 0"/>
             <Separator/>
@@ -230,7 +231,18 @@
                 <TextBlock x:Name="PathLength" FontSize="14"/>
             </StackPanel>
         </StackPanel>
-        
+        <ToolBar Style="{DynamicResource ToolBarStyle1}" HorizontalAlignment="Left" Margin="10,42,0,0" VerticalAlignment="Top" Background="White" Width="450" Height="26" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <Button x:Name="SaveButton" Content="Сохранить" Margin="10,0,0,0" Click="SaveButton_Click" FontSize="12"/>
+            <Separator/>
+            <Button x:Name="SaveAsButton" Content="Сохранить как" Click="SaveAsButton_Click" FontSize="12"/>
+            <Separator/>
+            <Button x:Name="LoadButton" Content="Загрузить" Click="LoadButton_Click" FontSize="12"/>
+            <Separator/>
+            <Button x:Name="ClearButton" Content="Очистить граф" FontSize="12" Click="ClearButton_Click"/>
+            <Separator/>
+            <Button x:Name="ForceAlgorithm" Content="Силовая укладка" FontSize="12" Click="ForceAlgorithm_Click"/>
+        </ToolBar>
+
     </Grid>
 
 </Window>

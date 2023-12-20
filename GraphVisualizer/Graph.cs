@@ -11,7 +11,7 @@ namespace GraphVisualizer
         Dictionary<string, List<Edge>> _arr;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
