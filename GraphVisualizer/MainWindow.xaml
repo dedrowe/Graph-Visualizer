@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphVisualizer"
         x:Name="window" x:Class="GraphVisualizer.MainWindow"
-        
+    
         mc:Ignorable="d"
-        Title="Graph visualizer" Height="1080" Width="1920"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        Title="Graph visualizer" WindowState="Maximized"
+        xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Window.Resources>
         <SolidColorBrush x:Key="ToolBarButtonHover" Color="#210080FF"/>
         <SolidColorBrush x:Key="ToolBarMenuBorder" Color="#FFB6BDC5"/>
