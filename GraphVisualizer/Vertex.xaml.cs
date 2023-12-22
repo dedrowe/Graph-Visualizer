@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Data;
-using System.Text.Json.Serialization;
 
 namespace GraphVisualizer
 {
@@ -21,7 +14,7 @@ namespace GraphVisualizer
     public partial class Vertex : UserControl, INotifyPropertyChanged
     {
         private object? movingObject;
-        public double firstXPos, firstYPos;
+        private double firstXPos, firstYPos;
         public double PositionX { get; set; }
         public double PositionY { get; set; }
         public double vertexRadius = 25;

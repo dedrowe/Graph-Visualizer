@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.Json;
-using System.Windows.Shell;
 using Microsoft.Win32;
 using System.IO;
 
@@ -268,8 +258,7 @@ namespace GraphVisualizer
             {
                 if (tmp is Edge tmpEdge)
                 {
-                    tmpEdge.Color = Brushes.Black;
-                    tmpEdge.Repaint();
+                    tmpEdge.Repaint(Brushes.Black);
                 }
             }
             if (StartVertex.Text != "" && EndVertex.Text != "")
@@ -281,8 +270,7 @@ namespace GraphVisualizer
                     foreach (Edge edge in path)
                     {
 
-                        edge.Color = Brushes.LightGreen;
-                        edge.Repaint();
+                        edge.Repaint(Brushes.LightGreen);
                         pathLength += edge.Distance;
                     }
                     PathLength.Text = pathLength.ToString();
@@ -347,15 +335,12 @@ namespace GraphVisualizer
                 double length = 0.4 * Math.Sqrt(GraphCanvas.ActualWidth * GraphCanvas.ActualHeight / _graph.Order);
                 for (double t = 10; t > 0; t += -0.1)
                 {
-                    foreach (var item in disp)
-                    {
-                        item[0] = 0;
-                        item[1] = 0;
-                    }
                     double deltaX, deltaY;
                     double distance;
                     for (int i = 0; i < vertices.Count; ++i)
                     {
+                        disp[i][0] = 0;
+                        disp[i][1] = 0;
                         for (int j = 0; j < vertices.Count; ++j)
                         {
                             if (i == j)
