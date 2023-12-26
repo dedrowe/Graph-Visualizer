@@ -38,7 +38,8 @@ namespace GraphVisualizer
                         Point position = e.GetPosition(GraphCanvas);
                         if (e.Source is Canvas)
                         {
-                            AddVertex(position.X, position.Y, $"{++_count}");
+                            double radius = 25;
+                            AddVertex(position.X - radius, position.Y - radius, $"{++_count}");
                             ShowPath();
                         }
                     }
@@ -82,16 +83,16 @@ namespace GraphVisualizer
             _graph.AddVertex(name);
             Vertex b = new Vertex();
             double radius = b.vertexRadius;
-            double vertexPositionX = x - radius;
-            double vertexPositionY = y - radius;
+            double vertexPositionX = x;
+            double vertexPositionY = y;
             if (x < 25)
-                vertexPositionX = 0;
-            else if (x > GraphCanvas.ActualWidth - radius)
-                vertexPositionX = GraphCanvas.ActualWidth - 2 * radius;
+                vertexPositionX = 1;
+            else if (x > GraphCanvas.ActualWidth - radius * 2)
+                vertexPositionX = GraphCanvas.ActualWidth - 2 * radius - 1;
             if (y < 25)
-                vertexPositionY = 0;
-            else if (y > GraphCanvas.ActualHeight - radius)
-                vertexPositionY = GraphCanvas.ActualHeight - 2 * radius;
+                vertexPositionY = 1;
+            else if (y > GraphCanvas.ActualHeight - radius * 2)
+                vertexPositionY = GraphCanvas.ActualHeight - 2 * radius - 1;
             b.PositionY = vertexPositionY;
             b.PositionX = vertexPositionX;
             b.SetValue(Canvas.LeftProperty, vertexPositionX);
@@ -333,6 +334,8 @@ namespace GraphVisualizer
                     }
                 }
                 double length = 0.4 * Math.Sqrt(GraphCanvas.ActualWidth * GraphCanvas.ActualHeight / _graph.Order);
+                if (length == 0)
+                    length = 0.4;
                 for (double t = 10; t > 0; t += -0.1)
                 {
                     double deltaX, deltaY;
@@ -348,6 +351,8 @@ namespace GraphVisualizer
                             deltaX = vertices[i].PositionX - vertices[j].PositionX;
                             deltaY = vertices[i].PositionY - vertices[j].PositionY;
                             distance = deltaX * deltaX + deltaY * deltaY;
+                            if (distance == 0)
+                                distance = 1;
                             disp[i][0] += deltaX / distance * length * length;
                             disp[i][1] += deltaY / distance * length * length;
                         }
@@ -361,11 +366,15 @@ namespace GraphVisualizer
                             for (int j = 0; j < vertices.Count; ++j)
                             {
                                 if (vertices[j].VertexName == e.To)
+                                {
                                     to = j;
+                                    break;
+                                }
                             }
                             deltaX = vertices[i].PositionX - vertices[to].PositionX;
                             deltaY = vertices[i].PositionY - vertices[to].PositionY;
                             distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+                            
                             disp[i][0] -= deltaX * distance / length;
                             disp[i][1] -= deltaY * distance / length;
                             disp[to][0] += deltaX * distance / length;
@@ -380,8 +389,8 @@ namespace GraphVisualizer
                         distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
                         vertices[i].PositionX += disp[i][0] / distance * t;
                         vertices[i].PositionY += disp[i][1] / distance * t;
-                        vertices[i].PositionX = Math.Min(GraphCanvas.ActualWidth - 50, Math.Max(0, vertices[i].PositionX));
-                        vertices[i].PositionY = Math.Min(GraphCanvas.ActualHeight - 50, Math.Max(0, vertices[i].PositionY));
+                        vertices[i].PositionX = Math.Min(GraphCanvas.ActualWidth - vertices[i].vertexRadius * 2 - 1, Math.Max(1, vertices[i].PositionX));
+                        vertices[i].PositionY = Math.Min(GraphCanvas.ActualHeight - vertices[i].vertexRadius * 2 - 1, Math.Max(1, vertices[i].PositionY));
                         vertices[i].SetValue(Canvas.LeftProperty, vertices[i].PositionX);
                         vertices[i].SetValue(Canvas.TopProperty, vertices[i].PositionY);
                         vertices[i].CalculateEdgeCoordinates(vertices[i].PositionX, vertices[i].PositionY);
