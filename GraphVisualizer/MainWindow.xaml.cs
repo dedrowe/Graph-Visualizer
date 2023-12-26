@@ -334,8 +334,6 @@ namespace GraphVisualizer
                     }
                 }
                 double length = 0.4 * Math.Sqrt(GraphCanvas.ActualWidth * GraphCanvas.ActualHeight / _graph.Order);
-                if (length == 0)
-                    length = 0.4;
                 for (double t = 10; t > 0; t += -0.1)
                 {
                     double deltaX, deltaY;
@@ -351,10 +349,11 @@ namespace GraphVisualizer
                             deltaX = vertices[i].PositionX - vertices[j].PositionX;
                             deltaY = vertices[i].PositionY - vertices[j].PositionY;
                             distance = deltaX * deltaX + deltaY * deltaY;
-                            if (distance == 0)
-                                distance = 1;
-                            disp[i][0] += deltaX / distance * length * length;
-                            disp[i][1] += deltaY / distance * length * length;
+                            if (distance > 0)
+                            {
+                                disp[i][0] += deltaX / distance * length * length;
+                                disp[i][1] += deltaY / distance * length * length;
+                            }
                         }
                     }
 
