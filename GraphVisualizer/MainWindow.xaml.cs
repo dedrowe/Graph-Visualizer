@@ -180,6 +180,7 @@ namespace GraphVisualizer
                 DeleteElement(i);
             foreach(Vertex i in vertices)
                 DeleteElement(i);
+            _count = 0;
         }
 
         private void CanvasRMBClick(object sender, MouseButtonEventArgs e)
